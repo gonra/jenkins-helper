@@ -1,9 +1,6 @@
 package com.intuit.benten;
 
-import com.offbytwo.jenkins.model.Build;
-import com.offbytwo.jenkins.model.Job;
-import com.offbytwo.jenkins.model.JobWithDetails;
-import com.offbytwo.jenkins.model.QueueReference;
+import com.offbytwo.jenkins.model.*;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -76,23 +73,15 @@ public class JenkinsHelperTest {
                     break;
                 }
             }
+            QueueItem queueItem = jk.getJenkins().getQueueItem(queue);
+            Build build = jk.getJenkins().getBuild(queueItem);
+            Thread.sleep(20000);
+            String x1 = build.details().getConsoleOutputText();
+            System.out.println("Respuesta:" + x1);
         } catch (Exception e){
             e.printStackTrace();
         }
-
-        try {
-            Build build02 = job2.getBuildByNumber(nextId);
-            if (build02 != null){
-                String resp = build02.details().getConsoleOutputText();
-                System.out.println("Respuesta:"+resp);
-            } else {
-                System.out.println("Respuesta: build null");
-            }
-
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        
         assertTrue(job2 != null);
     }
 }

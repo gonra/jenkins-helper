@@ -4,6 +4,7 @@ import com.offbytwo.jenkins.JenkinsServer;
 import com.offbytwo.jenkins.client.JenkinsHttpClient;
 import com.offbytwo.jenkins.model.Job;
 import com.offbytwo.jenkins.model.JobWithDetails;
+import com.offbytwo.jenkins.model.QueueItem;
 import com.offbytwo.jenkins.model.QueueReference;
 
 import java.net.URI;
@@ -17,6 +18,14 @@ public class JenkinsHelper {
 
     private JenkinsServer jenkins;
     private JenkinsHttpClient jenkinsHttpClient;
+
+    public JenkinsServer getJenkins() {
+        return jenkins;
+    }
+
+    public JenkinsHttpClient getJenkinsHttpClient() {
+        return jenkinsHttpClient;
+    }
 
     public void init(){
         try{
@@ -150,4 +159,6 @@ public class JenkinsHelper {
         return p;
 
     }
+
+
 }
