@@ -11,9 +11,9 @@ import java.util.Map;
 
 public class JenkinsHelper {
 
-    private String JENKIN_URL = "localhost";
+    private String JENKIN_URL = "http://localhost:8090";
     private String JENKIN_USER= "API";
-    private String JENKIN_TOKEN= "";
+    private String JENKIN_TOKEN= "API123";
 
     private JenkinsServer jenkins;
     private JenkinsHttpClient jenkinsHttpClient;
@@ -46,7 +46,7 @@ public class JenkinsHelper {
             int lastBuildNumber = job.details().getLastBuild().getNumber();
             int nextBuildNumber = job.details().getNextBuildNumber();
 
-            QueueReference queueReference = job.build();
+            QueueReference queueReference = job.build(true);
 
             int waitFor = 0;
             while(job.details().isInQueue()){
@@ -80,7 +80,7 @@ public class JenkinsHelper {
             int lastBuildNumber = job.details().getLastBuild().getNumber();
             int nextBuildNumber = job.details().getNextBuildNumber();
 
-            QueueReference queueReference = job.build(parameters);
+            QueueReference queueReference = job.build(parameters,true);
 
             int waitFor = 0;
             while(job.details().isInQueue()){
