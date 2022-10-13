@@ -15,7 +15,6 @@ import static org.junit.Assert.assertTrue;
 public class JenkinsHelperTest {
 
     private JenkinsHelper jk;
-    private String jobName1 = "demo1";
     private String jobName2 = "demo2";
 
 /*    @Test
@@ -62,26 +61,46 @@ public class JenkinsHelperTest {
 
         try {
             QueueReference queue = job2.build(parametros, true);
-
+            QueueItem queueItem = null;
             int waitFor = 0;
             while (job2.details().isInQueue()) {
-                System.out.print("Esperando:...");
                 waitFor++;
                 Thread.sleep(5000);
-                if (waitFor > 10) {
-                    System.out.print(".. fim");
+                if (waitFor > 12) {
                     break;
                 }
             }
-            QueueItem queueItem = jk.getJenkins().getQueueItem(queue);
+            System.out.println("FIMQUEUE1:" + waitFor);
+            waitFor = 0;
+            do {
+                waitFor++;
+                Thread.sleep(5000);
+                if (waitFor > 12) {
+                    break;
+                }
+                queueItem = jk.getJenkins().getQueueItem(queue);
+            } while (queueItem.getExecutable() == null);
+            System.out.println("FIMQUEUE2:" + waitFor);
             Build build = jk.getJenkins().getBuild(queueItem);
-            Thread.sleep(20000);
+            waitFor = 0;
+            while(build.details().isBuilding()){
+                waitFor++;
+                Thread.sleep(5000);
+                if (waitFor > 12) {
+                    break;
+                }
+            }
+            System.out.println("FIMQUEUE3:" + waitFor);
+
             String x1 = build.details().getConsoleOutputText();
-            System.out.println("Respuesta:" + x1);
+            int p1 = x1.indexOf("---CHIP");
+            if (p1 > 0) {
+                System.out.println("Respuesta:" + x1.substring(p1+10,p1+30));
+            }
         } catch (Exception e){
             e.printStackTrace();
         }
-        
+
         assertTrue(job2 != null);
     }
 }
